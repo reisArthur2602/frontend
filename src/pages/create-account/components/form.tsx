@@ -12,6 +12,10 @@ import { Logo } from "@/components/ui/shared/logo";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createAccount } from "@/http/user/create-account";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const createAccountSchema = z.object({
   name: z
@@ -23,17 +27,28 @@ const createAccountSchema = z.object({
 
   password: z
     .string()
-    .min(5, { message: "A senha deve ter no mínimo 5 caracteres" }),
+    .min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
 });
 
 export const CreateAccountForm = () => {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(createAccountSchema),
     defaultValues: { email: "", name: "", password: "" },
   });
 
+  const { mutateAsync: createAccountFn } = useMutation({
+    mutationFn: createAccount,
+    onSuccess: () => {
+      navigate("/sign");
+    },
+    onError: (error: ErrorResponse) => {
+      error.map((err) => toast.error(err.message));
+    },
+  });
+
   const onSubmit = async (data: z.infer<typeof createAccountSchema>) => {
-    console.log(data);
+    await createAccountFn(data);
   };
 
   return (
