@@ -1,11 +1,11 @@
 export const Logo = () => {
   return (
-    <a href="/" className="flex w-fit items-center gap-2">
+    <a href="/" className="w-fit ">
       <svg
-        width="24px"
-        height="24px"
+        width="32px"
+        height="32px"
         viewBox="0 0 24 24"
-        fill="#00bc7d"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g id="style=fill">
@@ -20,7 +20,6 @@ export const Logo = () => {
           </g>
         </g>
       </svg>
-      <div className="text-xl font-semibold up">Sender.io</div>
     </a>
   );
 };
