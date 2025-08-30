@@ -1,14 +1,14 @@
-import { UserStore } from "@/stores/user";
+import { tokenUtils } from "@/utils/token";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 export const SignLayout = () => {
-  const { currentUser } = UserStore();
+  const access_token = tokenUtils.get();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) navigate("/dashboard");
-  }, [currentUser, navigate]);
+    if (access_token) navigate("/dashboard");
+  }, [access_token, navigate]);
 
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/logo";
 import { createSession } from "@/http/user/create-session";
 
-import { token } from "@/utils/token";
+import { tokenUtils } from "@/utils/token";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,7 @@ export const LoginPage = () => {
     mutationFn: createSession,
     onSuccess: ({ accessToken, user }) => {
       updateUser(user);
-      token.save(accessToken);
+      tokenUtils.save(accessToken);
       toast.success(`Olá ${user.name}, seja bem vindo!`);
       navigate("/dashboard");
     },
