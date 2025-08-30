@@ -1,8 +1,84 @@
 import { getDetails } from "@/http/user/get-details";
 import { UserStore } from "@/stores/user";
 import { tokenUtils } from "@/utils/token";
+import {
+  ContactRoundIcon,
+  HistoryIcon,
+  Home,
+  MessageCircleReplyIcon,
+  MessageSquare,
+  User,
+  Wifi,
+} from "lucide-react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Logo } from "../logo";
+import { cn } from "@/lib/utils";
+
+const NAV_LINKS = [
+  {
+    title: "Menu",
+    itens: [
+      {
+        label: "Painel",
+        href: "/dashboard",
+        icon: Home,
+        tooltip: "Acesse a visão geral do seu painel de automações",
+      },
+    ],
+  },
+  {
+    title: "Atendimento",
+    itens: [
+      {
+        label: "Respostas Automáticas",
+        href: "/dashboard/menu",
+        icon: MessageCircleReplyIcon,
+        tooltip: "Configure mensagens automáticas para agilizar o atendimento",
+      },
+      {
+        label: "Filas de atendimento",
+        href: "/dashboard/queue",
+        icon: MessageSquare,
+        tooltip: "Organize e acompanhe suas filas de atendimento em tempo real",
+      },
+    ],
+  },
+  {
+    title: "Análises",
+    itens: [
+      {
+        label: "Contatos",
+        href: "/dashboard/contacts",
+        icon: ContactRoundIcon,
+        tooltip: "Gerencie e visualize todos os contatos do seu WhatsApp",
+      },
+      {
+        label: "Histórico de atendimento",
+        href: "/dashboard/historic",
+        icon: HistoryIcon,
+        tooltip: "Consulte o histórico completo de atendimentos realizados",
+      },
+    ],
+  },
+  {
+    title: "Configurações",
+    itens: [
+      {
+        label: "Perfil",
+        href: "/dashboard/profile",
+        icon: User,
+        tooltip: "Atualize suas informações e preferências de perfil",
+      },
+      {
+        label: "Gerenciar WhatsApp",
+        href: "/dashboard/whatsapp",
+        icon: Wifi,
+        tooltip: "Configure e monitore a conexão da sua instância WhatsApp",
+      },
+    ],
+  },
+];
 
 export const DashboardLayout = () => {
   const { updateUser } = UserStore();
@@ -22,9 +98,43 @@ export const DashboardLayout = () => {
     handleLoadSessionUser();
   }, []);
 
+  const { pathname } = useLocation();
+
+  const isCurrentPathName = (currentPathname: string) =>
+    pathname === currentPathname;
+
   return (
-    <div className="min-h-screen grid-cols-[240px_1fr]">
-      <aside>...</aside> <main>main</main>
+    <div className="min-h-screen grid grid-cols-[320px_1fr]">
+      <aside className="flex flex-col gap-6 p-6 ">
+        <Logo />
+
+        <nav className="flex flex-col gap-6">
+          {NAV_LINKS.map(({ title, itens }) => (
+            <div key={title} className="flex flex-col gap-2">
+              <span className="text-xs text-muted-foreground tracking-tighter font-semibold ">
+                {title}
+              </span>
+              {itens.map((item) => (
+                <a
+                  title={item.tooltip}
+                  href={item.href}
+                  className={cn(
+                    "flex no-underline text-muted-foreground text-sm p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-white transition-all font-medium",
+                    isCurrentPathName(item.href) &&
+                      "bg-primary text-white hover:bg-primary/70"
+                  )}
+                >
+                  <item.icon size={16} strokeWidth={2} />
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          ))}
+        </nav>
+
+        <div className="mt-auto">UserLogged</div>
+      </aside>
+      <main className="p-6">main</main>
     </div>
   );
 };

@@ -33,7 +33,7 @@ const loginSchema = z.object({
     .min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
 });
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const { updateUser } = UserStore();
   const navigate = useNavigate();
 
@@ -112,3 +112,4 @@ export const LoginPage = () => {
     </>
   );
 };
+export default LoginPage;
