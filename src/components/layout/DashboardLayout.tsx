@@ -11,7 +11,7 @@ import {
   Wifi,
 } from "lucide-react";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../logo";
 import { cn } from "@/lib/utils";
 
@@ -115,9 +115,9 @@ export const DashboardLayout = () => {
                 {title}
               </span>
               {itens.map((item) => (
-                <a
+                <button
+                  onClick={() => navigate(item.href, { replace: true })}
                   title={item.tooltip}
-                  href={item.href}
                   className={cn(
                     "flex no-underline text-muted-foreground text-sm p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-white transition-all font-medium",
                     isCurrentPathName(item.href) &&
@@ -126,7 +126,7 @@ export const DashboardLayout = () => {
                 >
                   <item.icon size={16} strokeWidth={2} />
                   {item.label}
-                </a>
+                </button>
               ))}
             </div>
           ))}
@@ -134,7 +134,9 @@ export const DashboardLayout = () => {
 
         <div className="mt-auto">UserLogged</div>
       </aside>
-      <main className="p-6">main</main>
+      <main className="p-6">
+        <Outlet />
+      </main>
     </div>
   );
 };
