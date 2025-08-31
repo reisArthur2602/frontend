@@ -1,3 +1,4 @@
+import { ConfigMenuDialog } from "@/components/ConfigMenuDialog";
 import { CreateMenuDialog } from "@/components/CreateMenuDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -57,9 +58,12 @@ const ResponsesPage = () => {
                   )}
                 </div>
                 <div className="flex space-x-1">
-                  <Button variant="ghost">
-                    <Settings />
-                  </Button>
+                  <ConfigMenuDialog menu={menu}>
+                    <Button variant="ghost">
+                      <Settings />
+                    </Button>
+                  </ConfigMenuDialog>
+
                   <Button variant="ghost">
                     <Trash2 />
                   </Button>

@@ -9,7 +9,7 @@ export type MenuConfigDays =
   | "saturday"
   | "sunday";
 
-interface IGetMenus {
+export interface IGetMenus {
   menus:
     | {
         id: string;
@@ -27,6 +27,16 @@ interface IGetMenus {
           created_at: string;
           updated_at: string;
         };
+        options: {
+          id: string;
+          trigger: number;
+          label: string;
+          replyText?: string;
+          action: "auto_reply" | "redirect_queue" | "end_session";
+          menu_id: string;
+          created_at: string;
+          updated_at: string;
+        }[];
         created_at: string;
         updated_at: string;
       }[]

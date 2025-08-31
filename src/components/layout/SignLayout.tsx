@@ -11,7 +11,7 @@ export const SignLayout = () => {
   }, [access_token, navigate]);
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+    <main className="min-h-dvh grid grid-cols-1 lg:grid-cols-2">
       <aside className="flex items-center justify-center p-6">
         <Outlet />
       </aside>

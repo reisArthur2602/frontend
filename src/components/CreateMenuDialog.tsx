@@ -77,7 +77,7 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Novo Menu</DialogTitle>
           <DialogDescription>
@@ -85,7 +85,11 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6"
+            id="create-menu-form"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -145,7 +149,7 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading}>
+            <Button form="create-menu-form" disabled={isLoading} type="submit">
               {!isLoading ? (
                 "Criar menu"
               ) : (
