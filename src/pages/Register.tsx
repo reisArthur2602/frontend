@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { useForm } from "react-hook-form";
-import { Logo } from "@/components/logo";
+import { Logo } from "@/components/shared/Logo";
 import {
   Form,
   FormControl,
@@ -43,7 +43,7 @@ const RegisterPage = () => {
   const { mutateAsync: createAccountFn } = useMutation({
     mutationFn: createAccount,
     onSuccess: () => {
-      navigate("/sign");
+      navigate("/");
     },
     onError: (error: ErrorResponse) => {
       error.map((err) => toast.error(err.message));

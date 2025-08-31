@@ -10,6 +10,7 @@ import WhatsAppPage from "./pages/WhatsApp";
 import { Toaster } from "sonner";
 import { SocketProvider } from "./providers/Socket.tsx";
 import { TanstackQueryProvider } from "./providers/TanstackQuery.tsx";
+import ResponsesPage from "./pages/Responses.tsx";
 
 export const App = () => {
   return (
@@ -27,6 +28,7 @@ export const App = () => {
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardPage />} />
               <Route path="whatsapp" element={<WhatsAppPage />} />
+              <Route path="responses" element={<ResponsesPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

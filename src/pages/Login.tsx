@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/logo";
+import { Logo } from "@/components/shared/Logo";
 import { createSession } from "@/http/user/create-session";
 
 import { tokenUtils } from "@/utils/token";

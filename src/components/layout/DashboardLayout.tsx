@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Logo } from "../logo";
+import { Logo } from "../shared/Logo";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -32,7 +32,7 @@ const NAV_LINKS = [
     itens: [
       {
         label: "Respostas Automáticas",
-        href: "/dashboard/menu",
+        href: "/dashboard/responses",
         icon: MessageCircleReplyIcon,
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
       },
@@ -116,6 +116,7 @@ export const DashboardLayout = () => {
               </span>
               {itens.map((item) => (
                 <button
+                  key={item.href}
                   onClick={() => navigate(item.href, { replace: true })}
                   title={item.tooltip}
                   className={cn(
