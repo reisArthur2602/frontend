@@ -7,8 +7,8 @@ import {
   Home,
   MessageCircleReplyIcon,
   MessageSquare,
+  QrCode,
   User,
-  Wifi,
 } from "lucide-react";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -37,8 +37,8 @@ const NAV_LINKS = [
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
       },
       {
-        label: "Filas de atendimento",
-        href: "/dashboard/queue",
+        label: "Atendimento",
+        href: "/dashboard/chat",
         icon: MessageSquare,
         tooltip: "Organize e acompanhe suas filas de atendimento em tempo real",
       },
@@ -71,9 +71,9 @@ const NAV_LINKS = [
         tooltip: "Atualize suas informações e preferências de perfil",
       },
       {
-        label: "Gerenciar WhatsApp",
+        label: "WhatsApp",
         href: "/dashboard/whatsapp",
-        icon: Wifi,
+        icon: QrCode,
         tooltip: "Configure e monitore a conexão da sua instância WhatsApp",
       },
     ],
@@ -104,7 +104,7 @@ export const DashboardLayout = () => {
     pathname === currentPathname;
 
   return (
-    <div className="min-h-dvh grid grid-cols-[320px_1fr]">
+    <div className="min-h-dvh grid grid-cols-[280px_1fr]">
       <aside className="flex flex-col gap-6 p-6 ">
         <Logo />
 

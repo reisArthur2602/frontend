@@ -3,14 +3,16 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { SignLayout } from "./components/layout/SignLayout";
 
+import { Toaster } from "sonner";
+import { SocketProvider } from "./providers/Socket.tsx";
+import { TanstackQueryProvider } from "./providers/TanstackQuery.tsx";
+
 import RegisterPage from "./pages/Register";
 import LoginPage from "./pages/Login";
 import DashboardPage from "./pages/Dashboard";
 import WhatsAppPage from "./pages/WhatsApp";
-import { Toaster } from "sonner";
-import { SocketProvider } from "./providers/Socket.tsx";
-import { TanstackQueryProvider } from "./providers/TanstackQuery.tsx";
 import ResponsesPage from "./pages/Responses.tsx";
+import ChatPage from "./pages/Chat.tsx";
 
 export const App = () => {
   return (
@@ -29,6 +31,7 @@ export const App = () => {
               <Route index element={<DashboardPage />} />
               <Route path="whatsapp" element={<WhatsAppPage />} />
               <Route path="responses" element={<ResponsesPage />} />
+              <Route path="chat" element={<ChatPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

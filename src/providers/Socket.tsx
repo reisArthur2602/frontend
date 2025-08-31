@@ -22,7 +22,7 @@ const SocketContext = createContext<SocketContextType>({
 });
 
 export const SocketProvider = ({ children }: PropsWithChildren) => {
-  const instanceId = "c07e4bbd-b4d9-47af-9dfd-6885408445b5";
+  const instanceId = "753a4e28-93bd-4ae6-997f-fa2afe1fee61";
 
   const [status, setStatus] = useState<"pending" | "active">("pending");
   const [qr, setQr] = useState<string | null>(null);
