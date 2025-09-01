@@ -11,20 +11,24 @@ import {
 
 import generateQrCode from "qrcode";
 
+type Status = 'pending' | 'active'
+
 type SocketContextType = {
-  status: "pending" | "active";
+  status: Status | null;
   qr: string | null;
 };
 
 const SocketContext = createContext<SocketContextType>({
-  status: "pending",
+  status: null,
   qr: null,
 });
 
-export const SocketProvider = ({ children }: PropsWithChildren) => {
-  const instanceId = "753a4e28-93bd-4ae6-997f-fa2afe1fee61";
 
-  const [status, setStatus] = useState<"pending" | "active">("pending");
+
+export const SocketProvider = ({ children }: PropsWithChildren) => {
+  const instanceId = "095700fe-bf4c-4376-b1ce-f3736ce88558";
+
+  const [status, setStatus] = useState<Status | null> (null);
   const [qr, setQr] = useState<string | null>(null);
 
   useEffect(() => {

@@ -104,7 +104,7 @@ export const DashboardLayout = () => {
     pathname === currentPathname;
 
   return (
-    <div className="min-h-dvh grid grid-cols-[280px_1fr]">
+    <div className=" grid grid-cols-[280px_1fr]">
       <aside className="flex flex-col gap-6 p-6 ">
         <Logo />
 

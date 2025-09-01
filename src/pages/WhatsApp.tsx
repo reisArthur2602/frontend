@@ -5,17 +5,21 @@ import { Smartphone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useSocket } from "@/providers/Socket";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const WhatsAppPage = () => {
   const { qr, status } = useSocket();
+const isLoading = !qr && !status
 
   return (
     <div>
       <header className="mb-12">
         <h1 className="text-base font-bold tracking-tight">Gerenciar Sessão</h1>
       </header>
-
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+{isLoading  ?  (<section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <Skeleton className="h-[350px] rounded-xl"/>
+  <Skeleton className="h-[350px] rounded-xl"/>
+</section>) : (<section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -104,7 +108,9 @@ const WhatsAppPage = () => {
             )}
           </CardContent>
         </Card>
-      </section>
+      </section>)
+      }
+     
     </div>
   );
 };

@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area"; // import do scroll-area
 
 const contacts = [
@@ -101,6 +101,8 @@ const ChatPage = () => {
   const [selectedContact, setSelectedContact] = useState(contacts[1]);
   const [newMessage, setNewMessage] = useState("");
 
+const isLast = messages.length -1
+
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       console.log("Sending message:", newMessage);
@@ -109,6 +111,9 @@ const ChatPage = () => {
   };
 
   const quickResponses = ["Obrigado!", "Aguarde um momento", "Posso ajudar?"];
+
+
+
 
   return (
     <div className="h-full grid grid-cols-[1fr_3fr] gap-4">
@@ -168,7 +173,7 @@ const ChatPage = () => {
 
         <CardContent className="flex-1 p-0">
           <ScrollArea className=" h-[650px] px-4">
-            {messages.map((message) => (
+            <>{messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex mb-4 last:mb-0 ${
@@ -203,6 +208,12 @@ const ChatPage = () => {
                 </div>
               </div>
             ))}
+
+      
+            </>
+            
+
+            
           </ScrollArea>
         </CardContent>
 

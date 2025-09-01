@@ -181,7 +181,7 @@ body {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-dvh;
   }
 
   h1 {
