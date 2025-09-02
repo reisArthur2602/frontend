@@ -11,94 +11,17 @@ import { Separator } from "@/components/ui/separator";
 import { Send } from "lucide-react";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const contacts = [
-  {
-    id: 1,
-    name: "Maria Silva",
-    avatar: "/placeholder-avatar.jpg",
-    lastMessage: "Obrigada pelo atendimento!",
-    time: "14:30",
-  },
-  {
-    id: 2,
-    name: "João Santos",
-    avatar: "/placeholder-avatar.jpg",
-    lastMessage: "Preciso de ajuda com meu pedido",
-    time: "14:15",
-  },
-  {
-    id: 3,
-    name: "Ana Costa",
-    avatar: "/placeholder-avatar.jpg",
-    lastMessage: "Qual o horário de funcionamento?",
-    time: "13:45",
-  },
-  {
-    id: 4,
-    name: "Pedro Lima",
-    avatar: "/placeholder-avatar.jpg",
-    lastMessage: "Produto chegou com defeito",
-    time: "12:20",
-  },
-];
-
-const messages = [
-  {
-    id: 1,
-    sender: "contact",
-    content: "Olá! Gostaria de saber sobre o status do meu pedido #12345",
-    time: "14:10",
-  },
-  {
-    id: 2,
-    sender: "agent",
-    content: "Olá João! Vou verificar o status do seu pedido para você.",
-    time: "14:11",
-  },
-  {
-    id: 2,
-    sender: "agent",
-    content: "Olá João! Vou verificar o status do seu pedido para você.",
-    time: "14:11",
-  },
-  {
-    id: 2,
-    sender: "agent",
-    content: "Olá João! Vou verificar o status do seu pedido para você.",
-    time: "14:11",
-  },
-  {
-    id: 2,
-    sender: "agent",
-    content: "Olá João! Vou verificar o status do seu pedido para você.",
-    time: "14:11",
-  },
-
-  {
-    id: 3,
-    sender: "agent",
-    content:
-      "Seu pedido já foi enviado e está a caminho! O código de rastreamento é BR123456789. Você pode acompanhar pelo site dos Correios.",
-    time: "14:12",
-  },
-  {
-    id: 4,
-    sender: "contact",
-    content: "Perfeito! Obrigado pela rapidez no atendimento.",
-    time: "14:14",
-  },
-  {
-    id: 5,
-    sender: "contact",
-    content: "Mais uma dúvida: vocês fazem entrega no fim de semana?",
-    time: "14:15",
-  },
-];
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useSocket } from "@/providers/Socket";
+import { useSearchParams } from "react-router-dom";
 
 const ChatPage = () => {
-  const [selectedContact, setSelectedContact] = useState(contacts[1]);
+  const { queue } = useSocket();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const leadParam = searchParams.get("lead");
+  const selectedLead = queue.find((l) => l.id === leadParam) ?? null;
+
   const [newMessage, setNewMessage] = useState("");
 
   const handleSendMessage = () => {
@@ -108,7 +31,12 @@ const ChatPage = () => {
     }
   };
 
-  const quickResponses = ["Obrigado!", "Aguarde um momento", "Posso ajudar?"];
+  const quickResponses = [
+    "Obrigado!",
+    "Aguarde um momento",
+    "Posso ajudar?",
+    "Ajudo em algo mais?",
+  ];
 
   return (
     <div className="h-full min-h-0 grid grid-cols-1 md:[grid-template-columns:1fr_3fr] gap-4">
@@ -120,35 +48,34 @@ const ChatPage = () => {
         <CardContent className="p-0 min-h-0 flex-1">
           <ScrollArea className="px-2 min-h-0 h-full">
             <div className="space-y-1">
-              {contacts.map((contact) => (
+              {queue.map((lead) => (
                 <div
-                  key={contact.id}
+                  key={lead.id}
                   className={`p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
-                    selectedContact.id === contact.id
-                      ? "bg-primary-light border-r-2 border-r-primary"
-                      : ""
+                    selectedLead?.id === lead.id &&
+                    "bg-primary-light border-r-2 border-r-primary"
                   }`}
-                  onClick={() => setSelectedContact(contact)}
+                  onClick={() => setSearchParams({ lead: lead.id })}
                 >
                   <div className="flex items-center gap-3">
-                    <Avatar className="size-12">
-                      <AvatarImage src={contact.avatar} alt={contact.name} />
+                    <Avatar className="size-10">
+                      {/* <AvatarImage src={contact.avatar} alt={contact.name} /> */}
                       <AvatarFallback>
-                        {contact.name
-                          .split(" ")
+                        {lead
+                          .name!.split(" ")
                           .map((n) => n[0])
                           .join("")}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 ">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium truncate">{contact.name}</h4>
+                        <h4 className="font-medium truncate">{lead.name}</h4>
                         <span className="text-xs text-muted-foreground">
-                          {contact.time}
+                          {"10:30"}
                         </span>
                       </div>
                       <p className="truncate line-clamp-1">
-                        {contact.lastMessage}
+                        {lead.messages[0].text}
                       </p>
                     </div>
                   </div>{" "}
@@ -161,45 +88,53 @@ const ChatPage = () => {
 
       <Card className="flex flex-col min-h-0">
         <CardHeader>
-          <CardTitle>{selectedContact.name}</CardTitle>
+          <CardTitle>{selectedLead?.name || ""}</CardTitle>
         </CardHeader>
 
         <Separator />
 
+        {!selectedLead && (
+          <CardContent className="flex-1">
+            <div>Selecione um contato</div>
+          </CardContent>
+        )}
+
         <CardContent className="flex-1 p-0 min-h-0">
           <ScrollArea className="px-4 min-h-0 h-full">
             <div className="p-2">
-              {messages.map((message) => (
+              {selectedLead?.messages.map((message) => (
                 <div
-                  key={`${message.id}-${message.time}`}
+                  key={`${message.id}-${message.created_at}`}
                   className={`flex mb-4 last:mb-0 ${
-                    message.sender === "agent" ? "justify-end" : "justify-start"
+                    message.from === "customer"
+                      ? "justify-start"
+                      : "justify-end"
                   }`}
                 >
                   <div
-                    className={`max-w-[70%] rounded-lg p-3 ${
-                      message.sender === "agent"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                    className={`max-w-[70%] min-w-[10%] rounded-lg p-3 ${
+                      message.from === "customer"
+                        ? " bg-muted "
+                        : "bg-primary text-primary-foreground"
                     }`}
                   >
                     <p
                       className={`text-sm ${
-                        message.sender === "agent"
-                          ? "text-primary-foreground"
-                          : "text-muted-foreground"
+                        message.from === "customer"
+                          ? "text-muted-foreground"
+                          : "text-primary-foreground"
                       }`}
                     >
-                      {message.content}
+                      {message.text}
                     </p>
                     <div
                       className={`flex items-center justify-end gap-1 mt-2 text-xs ${
-                        message.sender === "agent"
-                          ? "text-primary-foreground/70"
-                          : "text-muted-foreground"
+                        message.from === "customer"
+                          ? " text-muted-foreground"
+                          : "text-primary-foreground/70"
                       }`}
                     >
-                      <span>{message.time}</span>
+                      <span>{"11:30"}</span>
                     </div>
                   </div>
                 </div>
@@ -225,7 +160,7 @@ const ChatPage = () => {
 
           <div className="flex items-center gap-2 w-full flex-wrap">
             <span className="text-xs text-muted-foreground">
-              Respostas rápidas:
+              Respostas rápidas?
             </span>
             {quickResponses.map((response) => (
               <Button

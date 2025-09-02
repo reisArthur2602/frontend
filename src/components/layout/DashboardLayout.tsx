@@ -104,8 +104,8 @@ export const DashboardLayout = () => {
     pathname === currentPathname;
 
   return (
-    <div className="h-screen grid grid-cols-1 md:[grid-template-columns:280px_1fr]">
-      <aside className="flex flex-col gap-6 p-6 h-full overflow-auto">
+    <div className="h-screen grid grid-cols-1 md:[grid-template-columns:320px_1fr]">
+      <aside className="flex flex-col gap-4 p-6 h-full overflow-auto">
         <Logo />
 
         <nav className="flex flex-col gap-6">
@@ -117,10 +117,10 @@ export const DashboardLayout = () => {
               {itens.map((item) => (
                 <button
                   key={item.href}
-                  onClick={() => navigate(item.href, { replace: true })}
+                  onClick={() => navigate(item.href, { replace: false })}
                   title={item.tooltip}
                   className={cn(
-                    "flex no-underline text-muted-foreground text-sm p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-white transition-all font-medium",
+                    "flex no-underline text-muted-foreground text-sm p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-prima transition-all font-medium duration-100",
                     isCurrentPathName(item.href) &&
                       "bg-primary text-white hover:bg-primary/70"
                   )}

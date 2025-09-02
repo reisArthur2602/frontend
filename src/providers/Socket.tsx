@@ -8,19 +8,18 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-
 import generateQrCode from "qrcode";
-
-type Status = "pending" | "active";
 
 type SocketContextType = {
   status: Status | null;
   qr: string | null;
+  queue: Lead[];
 };
 
 const SocketContext = createContext<SocketContextType>({
   status: null,
   qr: null,
+  queue: [],
 });
 
 export const SocketProvider = ({ children }: PropsWithChildren) => {
@@ -28,25 +27,40 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
 
   const [status, setStatus] = useState<Status | null>(null);
   const [qr, setQr] = useState<string | null>(null);
+  const [queue, setQueue] = useState<Lead[]>([]);
 
   useEffect(() => {
-    socket.on(`qr:${instanceId}`, async (qrCode: string) =>
-      setQr(await generateQrCode.toDataURL(qrCode))
-    );
+    socket.on(`qr:${instanceId}`, async (qrCode: string) => {
+      const data = qrCode ? await generateQrCode.toDataURL(qrCode) : null;
+      setQr(data);
+    });
 
     socket.on(`status:${instanceId}`, (newStatus: "pending" | "active") => {
       setStatus(newStatus);
       if (newStatus === "active") setQr(null);
     });
 
+    socket.on("newLead", (lead: Lead) => {
+      console.log("newLead:", lead);
+      setQueue((prev) => [...prev, lead]);
+    });
+
+    socket.on("queue", (queue: Lead[]) => {
+      setQueue(queue);
+      console.log("currentQueue", queue);
+    });
+
     return () => {
       socket.off(`qr:${instanceId}`);
       socket.off(`status:${instanceId}`);
+      socket.off(`newLead`);
+      socket.off(`queue`);
     };
   }, [instanceId]);
 
+  console.log(queue);
   return (
-    <SocketContext.Provider value={{ status, qr }}>
+    <SocketContext.Provider value={{ status, qr, queue }}>
       {children}
     </SocketContext.Provider>
   );
