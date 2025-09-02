@@ -35,7 +35,7 @@ export const App = () => {
             </Route>
           </Routes>
         </BrowserRouter>
-        <Toaster expand />
+        <Toaster expand theme="dark" />
       </TanstackQueryProvider>
     </SocketProvider>
   );

@@ -62,7 +62,6 @@ const LoginPage = () => {
 
   return (
     <>
-      {" "}
       <Form {...form}>
         <form
           className="max-w-sm w-full flex flex-col gap-6 "
@@ -103,9 +102,15 @@ const LoginPage = () => {
           <Button disabled={form.formState.isSubmitting}>
             Acesse sua conta
           </Button>
-          <div className="text-muted-foreground text-xs w-full text-center ">
+          <div className="text-muted-foreground text-xs w-fit mx-auto ">
             Ainda não possui uma conta? {""}
-            <a href="/register">Ainda não possui uma conta?</a>
+            <Button
+              variant="link"
+              onClick={() => navigate("/register")}
+              className="p-0 text-sm"
+            >
+              Crie sua conta?
+            </Button>
           </div>
         </form>
       </Form>

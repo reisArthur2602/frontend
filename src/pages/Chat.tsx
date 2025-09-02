@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Send } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area"; // import do scroll-area
+import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const contacts = [
   {
@@ -101,8 +101,6 @@ const ChatPage = () => {
   const [selectedContact, setSelectedContact] = useState(contacts[1]);
   const [newMessage, setNewMessage] = useState("");
 
-const isLast = messages.length -1
-
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       console.log("Sending message:", newMessage);
@@ -112,19 +110,15 @@ const isLast = messages.length -1
 
   const quickResponses = ["Obrigado!", "Aguarde um momento", "Posso ajudar?"];
 
-
-
-
   return (
-    <div className="h-full grid grid-cols-[1fr_3fr] gap-4">
-      {/* Lista de contatos */}
-      <Card>
+    <div className="h-full min-h-0 grid grid-cols-1 md:[grid-template-columns:1fr_3fr] gap-4">
+      <Card className="flex flex-col min-h-0">
         <CardHeader>
           <CardTitle>Conversas</CardTitle>
         </CardHeader>
 
-        <CardContent className="p-0">
-          <ScrollArea className="px-2 h-[800px]">
+        <CardContent className="p-0 min-h-0 flex-1">
+          <ScrollArea className="px-2 min-h-0 h-full">
             <div className="space-y-1">
               {contacts.map((contact) => (
                 <div
@@ -137,7 +131,7 @@ const isLast = messages.length -1
                   onClick={() => setSelectedContact(contact)}
                 >
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
+                    <Avatar className="size-12">
                       <AvatarImage src={contact.avatar} alt={contact.name} />
                       <AvatarFallback>
                         {contact.name
@@ -153,9 +147,11 @@ const isLast = messages.length -1
                           {contact.time}
                         </span>
                       </div>
-                      <p className="truncate">{contact.lastMessage}</p>
+                      <p className="truncate line-clamp-1">
+                        {contact.lastMessage}
+                      </p>
                     </div>
-                  </div>
+                  </div>{" "}
                 </div>
               ))}
             </div>
@@ -163,57 +159,52 @@ const isLast = messages.length -1
         </CardContent>
       </Card>
 
-      {/* Área de chat */}
-      <Card className="flex flex-col h-full">
+      <Card className="flex flex-col min-h-0">
         <CardHeader>
           <CardTitle>{selectedContact.name}</CardTitle>
         </CardHeader>
 
         <Separator />
 
-        <CardContent className="flex-1 p-0">
-          <ScrollArea className=" h-[650px] px-4">
-            <>{messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex mb-4 last:mb-0 ${
-                  message.sender === "agent" ? "justify-end" : "justify-start"
-                }`}
-              >
+        <CardContent className="flex-1 p-0 min-h-0">
+          <ScrollArea className="px-4 min-h-0 h-full">
+            <div className="p-2">
+              {messages.map((message) => (
                 <div
-                  className={`max-w-[70%] rounded-lg p-3 ${
-                    message.sender === "agent"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                  key={`${message.id}-${message.time}`}
+                  className={`flex mb-4 last:mb-0 ${
+                    message.sender === "agent" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <p
-                    className={`text-sm ${
-                      message.sender === "agent"
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    {message.content}
-                  </p>
                   <div
-                    className={`flex items-center justify-end gap-1 mt-2 text-xs ${
+                    className={`max-w-[70%] rounded-lg p-3 ${
                       message.sender === "agent"
-                        ? "text-primary-foreground/70"
-                        : "text-muted-foreground"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
                     }`}
                   >
-                    <span>{message.time}</span>
+                    <p
+                      className={`text-sm ${
+                        message.sender === "agent"
+                          ? "text-primary-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {message.content}
+                    </p>
+                    <div
+                      className={`flex items-center justify-end gap-1 mt-2 text-xs ${
+                        message.sender === "agent"
+                          ? "text-primary-foreground/70"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      <span>{message.time}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-
-      
-            </>
-            
-
-            
+              ))}
+            </div>
           </ScrollArea>
         </CardContent>
 

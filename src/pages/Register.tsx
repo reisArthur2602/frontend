@@ -113,9 +113,16 @@ const RegisterPage = () => {
 
           <Button disabled={form.formState.isSubmitting}>Criar conta</Button>
 
-          <div className="text-muted-foreground text-xs w-full text-center">
+          <div className="text-muted-foreground text-xs w-fit mx-auto ">
             Já possui uma conta? {""}
-            <a href="/">Acesse sua conta?</a>
+            <Button
+              variant="link"
+              type="button"
+              onClick={() => navigate("/")}
+              className="p-0 text-sm"
+            >
+              Acesse sua conta
+            </Button>
           </div>
         </form>
       </Form>

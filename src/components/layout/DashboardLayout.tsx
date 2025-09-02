@@ -4,7 +4,7 @@ import { tokenUtils } from "@/utils/token";
 import {
   ContactRoundIcon,
   HistoryIcon,
-  Home,
+  LayoutGridIcon,
   MessageCircleReplyIcon,
   MessageSquare,
   QrCode,
@@ -22,7 +22,7 @@ const NAV_LINKS = [
       {
         label: "Painel",
         href: "/dashboard",
-        icon: Home,
+        icon: LayoutGridIcon,
         tooltip: "Acesse a visão geral do seu painel de automações",
       },
     ],
@@ -37,7 +37,7 @@ const NAV_LINKS = [
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
       },
       {
-        label: "Atendimento",
+        label: "Fila de Atendimento",
         href: "/dashboard/chat",
         icon: MessageSquare,
         tooltip: "Organize e acompanhe suas filas de atendimento em tempo real",
@@ -65,16 +65,16 @@ const NAV_LINKS = [
     title: "Configurações",
     itens: [
       {
-        label: "Perfil",
-        href: "/dashboard/profile",
-        icon: User,
-        tooltip: "Atualize suas informações e preferências de perfil",
-      },
-      {
         label: "WhatsApp",
         href: "/dashboard/whatsapp",
         icon: QrCode,
         tooltip: "Configure e monitore a conexão da sua instância WhatsApp",
+      },
+      {
+        label: "Perfil",
+        href: "/dashboard/profile",
+        icon: User,
+        tooltip: "Atualize suas informações e preferências de perfil",
       },
     ],
   },
@@ -104,8 +104,8 @@ export const DashboardLayout = () => {
     pathname === currentPathname;
 
   return (
-    <div className=" grid grid-cols-[280px_1fr]">
-      <aside className="flex flex-col gap-6 p-6 ">
+    <div className="h-screen grid grid-cols-1 md:[grid-template-columns:280px_1fr]">
+      <aside className="flex flex-col gap-6 p-6 h-full overflow-auto">
         <Logo />
 
         <nav className="flex flex-col gap-6">
@@ -135,7 +135,7 @@ export const DashboardLayout = () => {
 
         <div className="mt-auto">UserLogged</div>
       </aside>
-      <main className="p-6">
+      <main className="p-6 min-h-0 overflow-auto">
         <Outlet />
       </main>
     </div>

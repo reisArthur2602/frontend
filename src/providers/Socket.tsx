@@ -11,7 +11,7 @@ import {
 
 import generateQrCode from "qrcode";
 
-type Status = 'pending' | 'active'
+type Status = "pending" | "active";
 
 type SocketContextType = {
   status: Status | null;
@@ -23,12 +23,10 @@ const SocketContext = createContext<SocketContextType>({
   qr: null,
 });
 
-
-
 export const SocketProvider = ({ children }: PropsWithChildren) => {
-  const instanceId = "095700fe-bf4c-4376-b1ce-f3736ce88558";
+  const instanceId = "041297f1-7e60-4d3d-8a2a-fa82bdaebf02";
 
-  const [status, setStatus] = useState<Status | null> (null);
+  const [status, setStatus] = useState<Status | null>(null);
   const [qr, setQr] = useState<string | null>(null);
 
   useEffect(() => {

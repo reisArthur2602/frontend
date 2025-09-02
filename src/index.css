@@ -171,17 +171,18 @@
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
 
-body {
+
+html, body, #root {
+  height: 100%;
   font-family: "Inter", sans-serif;
 }
-
 @layer base {
   * {
-    @apply border-border font-sans;
+    @apply border-border ;
   }
 
   body {
-    @apply bg-background text-foreground min-h-dvh;
+    @apply bg-background text-foreground;
   }
 
   h1 {
@@ -208,9 +209,8 @@ body {
       circle at bottom,
       #22c55e 0%,
       #16a34a 40%,
-     #14532d 80%,
+      #14532d 80%,
       #0f172a 100%
-     
     );
   }
 }
