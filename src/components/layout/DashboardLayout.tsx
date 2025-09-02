@@ -2,11 +2,11 @@ import { getDetails } from "@/http/user/get-details";
 import { UserStore } from "@/stores/user";
 import { tokenUtils } from "@/utils/token";
 import {
+  BotMessageSquareIcon,
   ContactRoundIcon,
   HistoryIcon,
   LayoutGridIcon,
   MessageCircleReplyIcon,
-  MessageSquare,
   QrCode,
   User,
 } from "lucide-react";
@@ -33,13 +33,13 @@ const NAV_LINKS = [
       {
         label: "Respostas Automáticas",
         href: "/dashboard/responses",
-        icon: MessageCircleReplyIcon,
+        icon: BotMessageSquareIcon,
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
       },
       {
         label: "Fila de Atendimento",
         href: "/dashboard/chat",
-        icon: MessageSquare,
+        icon: MessageCircleReplyIcon,
         tooltip: "Organize e acompanhe suas filas de atendimento em tempo real",
       },
     ],
