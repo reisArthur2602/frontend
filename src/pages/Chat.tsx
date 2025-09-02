@@ -39,19 +39,19 @@ const ChatPage = () => {
   ];
 
   return (
-    <div className="h-full min-h-0 grid grid-cols-1 md:[grid-template-columns:1fr_3fr] gap-4">
-      <Card className="flex flex-col min-h-0">
+    <div className="h-full min-h-0 grid grid-cols-[1fr_2fr] gap-4">
+      <Card className="flex flex-col min-h-0 col-span-1">
         <CardHeader>
           <CardTitle>Conversas</CardTitle>
         </CardHeader>
 
         <CardContent className="p-0 min-h-0 flex-1">
-          <ScrollArea className="px-2 min-h-0 h-full">
-            <div className="space-y-1">
-              {queue.map((lead) => (
+          <ScrollArea className="px-2 min-h-0 h-full ">
+          <div className="space-y-2">  
+            {queue.map((lead) => (
                 <div
                   key={lead.id}
-                  className={`p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
+                  className={`w-full p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
                     selectedLead?.id === lead.id &&
                     "bg-primary-light border-r-2 border-r-primary"
                   }`}
@@ -59,7 +59,7 @@ const ChatPage = () => {
                 >
                   <div className="flex items-center gap-3">
                     <Avatar className="size-10">
-                      {/* <AvatarImage src={contact.avatar} alt={contact.name} /> */}
+                     
                       <AvatarFallback>
                         {lead
                           .name!.split(" ")
@@ -67,21 +67,23 @@ const ChatPage = () => {
                           .join("")}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 ">
+
+                    <div className="w-full">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium truncate">{lead.name}</h4>
                         <span className="text-xs text-muted-foreground">
                           {"10:30"}
                         </span>
                       </div>
-                      <p className="truncate line-clamp-1">
+                      <p className=" line-clamp-1">
                         {lead.messages[0].text}
                       </p>
                     </div>
-                  </div>{" "}
+                  </div>
                 </div>
-              ))}
-            </div>
+              ))}</div>
+            
+          
           </ScrollArea>
         </CardContent>
       </Card>
