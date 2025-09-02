@@ -2,10 +2,11 @@ type ErrorResponse = { message: string }[] | [];
 
 type Message = {
   id: string;
-  created_at: Date;
+  
   text: string;
   from: "customer" | "menu" | "agent";
   leadId: string;
+  created_at: string;
 };
 
 type Lead = {
@@ -17,6 +18,11 @@ type Lead = {
   menu_id: string | null;
   created_at: Date;
   updated_at: Date;
+};
+
+type SendMessage = {
+  phone: string;
+  text: string;
 };
 
 type Status = "pending" | "active";

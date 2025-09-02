@@ -9,14 +9,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useSocket } from "@/providers/Socket";
 import { useSearchParams } from "react-router-dom";
 
 const ChatPage = () => {
-  const { queue } = useSocket();
+  const { queue, sendMessage } = useSocket();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const leadParam = searchParams.get("lead");
@@ -24,66 +24,86 @@ const ChatPage = () => {
 
   const [newMessage, setNewMessage] = useState("");
 
-  const handleSendMessage = () => {
+  const handleSendMessage = ({ phone, text }: SendMessage) => {
     if (newMessage.trim()) {
-      console.log("Sending message:", newMessage);
+      sendMessage({ phone, text });
       setNewMessage("");
     }
   };
 
+  const lastmessageRef = useRef<HTMLDivElement | null>(null);
+
   const quickResponses = [
-    "Obrigado!",
     "Aguarde um momento",
     "Posso ajudar?",
     "Ajudo em algo mais?",
   ];
 
+  useEffect(() => {
+    
+    if (lastmessageRef.current) {
+      lastmessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
+    }
+  }, [selectedLead?.messages]); 
+
+  const formatHours = (date:string) => {
+const parseDate = new Date(date)
+return parseDate.toLocaleString('pt-BR', { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    hour12: false 
+  });
+  }
   return (
     <div className="h-full min-h-0 grid grid-cols-[1fr_2fr] gap-4">
       <Card className="flex flex-col min-h-0 col-span-1">
         <CardHeader>
-          <CardTitle>Conversas</CardTitle>
+          <CardTitle>Fila ({queue.length})</CardTitle>
         </CardHeader>
 
         <CardContent className="p-0 min-h-0 flex-1">
-          <ScrollArea className="px-2 min-h-0 h-full ">
-          <div className="space-y-2">  
-            {queue.map((lead) => (
-                <div
-                  key={lead.id}
-                  className={`w-full p-4 cursor-pointer transition-colors hover:bg-muted/50 ${
-                    selectedLead?.id === lead.id &&
-                    "bg-primary-light border-r-2 border-r-primary"
-                  }`}
-                  onClick={() => setSearchParams({ lead: lead.id })}
-                >
-                  <div className="flex items-center gap-3">
-                    <Avatar className="size-10">
-                     
-                      <AvatarFallback>
-                        {lead
-                          .name!.split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
+          <ScrollArea className="px-2 min-h-0 h-full">
+            <div className="space-y-2">
+              {queue.map((lead) => {
+                const lastMessage = lead.messages[lead.messages.length - 1];
+                return (
+                  <div
+                    key={lead.id}
+                    className={`w-full p-4 pl-2 cursor-pointer transition-colors hover:bg-muted/50 ${
+                      selectedLead?.id === lead.id &&
+                      "bg-primary-light border-r-2 border-r-primary"
+                    }`}
+                    onClick={() => setSearchParams({ lead: lead.id })}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Avatar className="size-10">
+                        <AvatarFallback>
+                          {lead
+                            .name!
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
 
-                    <div className="w-full">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium truncate">{lead.name}</h4>
-                        <span className="text-xs text-muted-foreground">
-                          {"10:30"}
-                        </span>
+                      <div className="w-full">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium truncate">{lead.name}</h4>
+                          <span className="text-xs text-muted-foreground">
+                            {formatHours(lastMessage.created_at)}
+                          </span>
+                        </div>
+                        <p className=" line-clamp-1">{lastMessage.text}</p>
                       </div>
-                      <p className=" line-clamp-1">
-                        {lead.messages[0].text}
-                      </p>
                     </div>
                   </div>
-                </div>
-              ))}</div>
-            
-          
+                );
+              })}
+            </div>
           </ScrollArea>
         </CardContent>
       </Card>
@@ -108,16 +128,12 @@ const ChatPage = () => {
                 <div
                   key={`${message.id}-${message.created_at}`}
                   className={`flex mb-4 last:mb-0 ${
-                    message.from === "customer"
-                      ? "justify-start"
-                      : "justify-end"
+                    message.from === "customer" ? "justify-start" : "justify-end"
                   }`}
                 >
                   <div
-                    className={`max-w-[70%] min-w-[10%] rounded-lg p-3 ${
-                      message.from === "customer"
-                        ? " bg-muted "
-                        : "bg-primary text-primary-foreground"
+                    className={`max-w-[70%] min-w-[15%] rounded-lg p-3 ${
+                      message.from === "customer" ? "bg-muted" : "bg-primary text-primary-foreground"
                     }`}
                   >
                     <p
@@ -136,11 +152,12 @@ const ChatPage = () => {
                           : "text-primary-foreground/70"
                       }`}
                     >
-                      <span>{"11:30"}</span>
+                      <span>{formatHours(message.created_at)}</span>
                     </div>
                   </div>
                 </div>
               ))}
+              <div ref={lastmessageRef} />
             </div>
           </ScrollArea>
         </CardContent>
@@ -153,9 +170,16 @@ const ChatPage = () => {
               placeholder="Mensagem"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyPress={(e) =>
+                e.key === "Enter" &&
+                handleSendMessage({ phone: selectedLead?.phone!, text: newMessage })
+              }
             />
-            <Button onClick={handleSendMessage}>
+            <Button
+              onClick={() =>
+                handleSendMessage({ phone: selectedLead?.phone!, text: newMessage })
+              }
+            >
               <Send />
             </Button>
           </div>
