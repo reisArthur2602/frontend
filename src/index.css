@@ -170,15 +170,25 @@
   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
+/* Remove/ajusta cor do autofill no Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 transparent inset !important;
+  -webkit-text-fill-color: var(--primary-foreground) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
 
-
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   font-family: "Inter", sans-serif;
+  color: var(--primary-foreground);
 }
 @layer base {
   * {
-    @apply border-border ;
+    @apply border-border;
   }
 
   body {
