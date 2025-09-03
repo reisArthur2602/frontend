@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const WhatsAppPage = () => {
   const { qr, status } = useSocket();
-  const isLoading = !qr && !status;
+  const isLoading = !status;
 
   return (
     <div>
