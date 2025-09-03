@@ -1,5 +1,6 @@
 import { ConfigMenuDialog } from "@/components/ConfigMenuDialog";
 import { CreateMenuDialog } from "@/components/CreateMenuDialog";
+import { PreviewMenuDialog } from "@/components/PreviewMenuDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,7 +77,7 @@ const ResponsesPage = () => {
                 <div className="flex items-center space-x-2 mb-2">
                   <MessageSquare className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">
-                    Resposta automática :
+                    Resposta automática:
                   </span>
                 </div>
 
@@ -86,11 +87,12 @@ const ResponsesPage = () => {
                   </p>
                 </div>
               </div>
-
+          <PreviewMenuDialog menu={menu}>
               <Button variant="outline" className="w-fit">
                 <Eye className="h-3 w-3" />
                 Ver Completo
               </Button>
+          </PreviewMenuDialog>
             </CardContent>
           </Card>
         ))}
