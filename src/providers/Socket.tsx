@@ -17,7 +17,7 @@ const sendMessage = ({ phone, text }: SendMessage) =>
 type SocketContextType = {
   status: Status | null;
   qr: string | null;
-  queue: Lead[];
+  queue: Lead[] | [];
   sendMessage: ({ phone, text }: SendMessage) => void;
 };
 
@@ -33,7 +33,7 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
 
   const [status, setStatus] = useState<Status | null>(null);
   const [qr, setQr] = useState<string | null>(null);
-  const [queue, setQueue] = useState<Lead[]>([]);
+  const [queue, setQueue] = useState<Lead[] | []>([]);
 
   useEffect(() => {
     socket.on(`qr:${instance}`, async (qrCode: string) => {
@@ -52,6 +52,7 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
     });
 
     socket.on("queue", (queue: Lead[]) => {
+      console.log('queue:',queue)
       setQueue(queue);
     });
 

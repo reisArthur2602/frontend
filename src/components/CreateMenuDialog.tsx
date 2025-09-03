@@ -99,10 +99,7 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
                   <FormControl>
                     <Input placeholder="Ex: Atendimento Principal" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Nome usado para identificar este menu. Ex: Principal,
-                    Suporte, Financeiro.
-                  </FormDescription>
+                  
                   <FormMessage />
                 </FormItem>
               )}
@@ -121,7 +118,7 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
                     />
                   </FormControl>
                   <FormDescription>
-                    Palavras-chave para buscas rápidas. Separe por vírgula.
+                    Separe por vírgula.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -141,10 +138,7 @@ export const CreateMenuDialog = ({ children }: PropsWithChildren) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Mensagem inicial exibida ao cliente. Ex: “Olá! Digite 1 para
-                    Vendas.”
-                  </FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
