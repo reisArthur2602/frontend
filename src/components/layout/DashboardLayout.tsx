@@ -2,13 +2,10 @@ import { getDetails } from "@/http/user/get-details";
 import { UserStore } from "@/stores/user";
 import { tokenUtils } from "@/utils/token";
 import {
-  BotMessageSquareIcon,
   ContactRoundIcon,
-  HistoryIcon,
   LayoutGridIcon,
-  MessageCircleReplyIcon,
+  MessageSquare,
   QrCode,
-  User,
 } from "lucide-react";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -31,16 +28,10 @@ const NAV_LINKS = [
     title: "Atendimento",
     itens: [
       {
-        label: "Respostas Automáticas",
-        href: "/dashboard/responses",
-        icon: BotMessageSquareIcon,
+        label: "Menu",
+        href: "/dashboard/menu",
+        icon: MessageSquare,
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
-      },
-      {
-        label: "Fila de Atendimento",
-        href: "/dashboard/chat",
-        icon: MessageCircleReplyIcon,
-        tooltip: "Organize e acompanhe suas filas de atendimento em tempo real",
       },
     ],
   },
@@ -49,15 +40,9 @@ const NAV_LINKS = [
     itens: [
       {
         label: "Contatos",
-        href: "/dashboard/contacts",
+        href: "/dashboard/leads",
         icon: ContactRoundIcon,
         tooltip: "Gerencie e visualize todos os contatos do seu WhatsApp",
-      },
-      {
-        label: "Histórico de atendimento",
-        href: "/dashboard/historic",
-        icon: HistoryIcon,
-        tooltip: "Consulte o histórico completo de atendimentos realizados",
       },
     ],
   },
@@ -69,12 +54,6 @@ const NAV_LINKS = [
         href: "/dashboard/whatsapp",
         icon: QrCode,
         tooltip: "Configure e monitore a conexão da sua instância WhatsApp",
-      },
-      {
-        label: "Perfil",
-        href: "/dashboard/profile",
-        icon: User,
-        tooltip: "Atualize suas informações e preferências de perfil",
       },
     ],
   },
@@ -105,10 +84,10 @@ export const DashboardLayout = () => {
 
   return (
     <div className="h-screen grid grid-cols-1 md:[grid-template-columns:280px_1fr]">
-      <aside className="flex flex-col gap-4 p-6 h-full overflow-auto">
+      <aside className="flex flex-col gap-4 p-4 h-full overflow-auto border-r border-muted/40 bg-muted/5">
         <Logo />
 
-        <nav className="flex flex-col gap-6">
+        <nav className="flex flex-col gap-6 ">
           {NAV_LINKS.map(({ title, itens }) => (
             <div key={title} className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground tracking-tighter font-semibold ">
@@ -120,7 +99,7 @@ export const DashboardLayout = () => {
                   onClick={() => navigate(item.href, { replace: false })}
                   title={item.tooltip}
                   className={cn(
-                    "flex no-underline text-muted-foreground text-sm p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-prima transition-all font-medium duration-100",
+                    "flex no-underline text-muted-foreground/60 text-xs p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-prima transition-all font-medium duration-100",
                     isCurrentPathName(item.href) &&
                       "bg-primary text-white hover:bg-primary/70"
                   )}

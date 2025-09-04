@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { axiosConfig } from "@/lib/axios";
 
-interface ICreateOptions {
-  options: {
-    trigger: string;
-    label: string;
-    reply_text?: string;
-    action: "auto_reply" | "redirect_queue" | "end_session";
-    menu_id: string;
-  }[];
+interface ICreateOption {
+  trigger: string;
+  label: string;
+  payload: any;
+  action: MenuOptionAction;
+  menu_id: string;
 }
 
-export const createOption = async ({ options }: ICreateOptions) => {
-  await axiosConfig.post("/menu/option/create", { options });
+export const createOption = async (data: ICreateOption) => {
+  await axiosConfig.post("/menu/option/create", data);
 };

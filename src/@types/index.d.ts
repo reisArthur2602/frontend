@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type ErrorResponse = { message: string }[] | [];
 
 type Message = {
@@ -24,6 +25,18 @@ type SendMessage = {
 };
 
 type Status = "pending" | "active";
+type MenuOptionAction = "auto_reply" | "forward_to_number";
+
+type MenuOption = {
+  id: string;
+  label: string;
+  trigger: string;
+  menu_id: string;
+  payload: any;
+  action: MenuOptionAction;
+  created_at: Date;
+  updated_at: Date;
+};
 
 type Menu = {
   id: string;
@@ -31,26 +44,7 @@ type Menu = {
   message: string;
   keywords: string[];
   active: boolean;
-  config: {
-    id: string;
-    start_time: string;
-    end_time: string;
-    days: MenuConfigDays[];
-    default_message_out_of_time: string | null;
-    default_message_out_of_date: string | null;
-    created_at: string;
-    updated_at: string;
-  };
-  options: {
-    id: string;
-    trigger: number;
-    label: string;
-    replyText?: string;
-    action: "auto_reply" | "redirect_queue" | "end_session";
-    menu_id: string;
-    created_at: string;
-    updated_at: string;
-  }[];
+  options: MenuOption[] | [];
   created_at: string;
   updated_at: string;
 };

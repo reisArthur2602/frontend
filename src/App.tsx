@@ -11,8 +11,8 @@ import RegisterPage from "./pages/Register";
 import LoginPage from "./pages/Login";
 import DashboardPage from "./pages/Dashboard";
 import WhatsAppPage from "./pages/WhatsApp";
-import ResponsesPage from "./pages/Responses.tsx";
 import ChatPage from "./pages/Chat.tsx";
+import MenuPage from "./pages/Menu.tsx";
 
 export const App = () => {
   return (
@@ -22,20 +22,34 @@ export const App = () => {
           <Routes>
             <Route path="/" element={<SignLayout />}>
               <Route index element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
+              <Route
+                path="register"
+                caseSensitive={false}
+                element={<RegisterPage />}
+              />
             </Route>
           </Routes>
 
           <Routes>
-            <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardPage />} />
-              <Route path="whatsapp" element={<WhatsAppPage />} />
-              <Route path="responses" element={<ResponsesPage />} />
-              <Route path="chat" element={<ChatPage />} />
+              <Route
+                path="whatsapp"
+                caseSensitive={false}
+                element={<WhatsAppPage />}
+              />
+              <Route path="menu" caseSensitive={false} element={<MenuPage />} />
+              <Route
+                path="leads"
+                caseSensitive={false}
+                element={<ChatPage />}
+              />
+
+              <Route path="*" element={<DashboardPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
-        <Toaster expand theme="dark" />
+        <Toaster expand richColors position="top-center" theme="dark"/>
       </TanstackQueryProvider>
     </SocketProvider>
   );
