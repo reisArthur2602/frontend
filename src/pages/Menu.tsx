@@ -1,4 +1,5 @@
 import { CreateMenuSheet } from "@/components/CreateMenuSheet";
+import { DeleteMenuAlert } from "@/components/DeleteMenuAlert";
 import { SearchMenuInput } from "@/components/SearchMenuInput";
 import { Badge } from "@/components/ui/badge";
 
@@ -104,10 +105,15 @@ const MenuPage = () => {
                       <Power />
                       {menu.active ? "Desativar" : "Ativar"}
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Trash2 />
+                  
+                      <DeleteMenuAlert menu_id={menu.id}>
+                      <Button className="w-full justify-start" variant="ghost">
+                          <Trash2 />
                       Excluir
-                    </DropdownMenuItem>
+                      </Button>
+                    </DeleteMenuAlert>
+                   
+                  
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
