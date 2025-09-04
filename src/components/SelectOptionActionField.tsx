@@ -26,7 +26,7 @@ const actionTypes = [
   },
 
   {
-    value: "forward",
+    value: "forward_to_number",
     label: "Encaminhar",
   },
   {
@@ -86,28 +86,44 @@ export const SelectOptionActionField = () => {
           </FormItem>
         );
 
-      case "forward":
+      case "forward_to_number":
         return (
           <div className="space-y-4">
             <FormItem>
-              <FormLabel htmlFor="forward_to">Encaminhar para *</FormLabel>
+              <FormLabel htmlFor="forward_to_number">
+                Encaminhar para *
+              </FormLabel>
               <FormControl>
                 <Input
-                  id="forward_to"
-                  value={payload.forward_to || ""}
-                  onChange={(e) => updatePayload("forward_to", e.target.value)}
-                  placeholder="+5511999999999"
+                  id="forward_to_number"
+                  value={payload.forward_to_number || ""}
+                  onChange={(e) =>
+                    updatePayload("forward_to_number", e.target.value)
+                  }
+                  placeholder="5511999999999"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
-
+            <FormItem>
+              <FormLabel htmlFor="forward_text">Texto Encaminhado</FormLabel>
+              <FormControl>
+                <Textarea
+                  id="forward_text"
+                  value={payload.forward_text || ""}
+                  onChange={(e) =>
+                    updatePayload("forward_text", e.target.value)
+                  }
+                  placeholder="Mensagem encaminhada:"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
             <FormItem>
               <FormLabel htmlFor="finish_text">Texto de Finalização</FormLabel>
               <FormControl>
                 <Textarea
                   id="finish_text"
-                  className="min-h-[100px] resize-none"
                   value={payload.finish_text || ""}
                   onChange={(e) => updatePayload("finish_text", e.target.value)}
                   placeholder="Sua mensagem foi encaminhada!"

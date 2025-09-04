@@ -102,8 +102,9 @@ export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
               <FormLabel>Mensagem do Menu *</FormLabel>
               <FormControl>
                 <Textarea
+                className="whitespace-break-spaces"
                   disabled={isLoading}
-                  placeholder="Olá! Como posso ajudá-lo hoje?"
+                  placeholder="Olá! Como posso ajudá-lo hoje? "
                   rows={3}
                   {...field}
                 />

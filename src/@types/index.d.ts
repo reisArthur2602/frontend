@@ -25,7 +25,7 @@ type SendMessage = {
 };
 
 type Status = "pending" | "active";
-type MenuOptionAction = "auto_reply" | "forward_to_number";
+type MenuOptionAction = "auto_reply" | "forward_to_number" | "redirect_queue";
 
 type MenuOption = {
   id: string;
