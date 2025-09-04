@@ -21,6 +21,9 @@ import { Button } from "./ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { CreateOptionDialog } from "./CreateOptionDialog";
 import { Badge } from "./ui/badge";
+import { deleteOption } from "@/http/option/delete-option";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface ICreateMenuSheet {
   children: ReactNode;
@@ -28,6 +31,33 @@ interface ICreateMenuSheet {
 }
 
 export const CreateMenuSheet = ({ children, menu }: ICreateMenuSheet) => {
+const queryClient = useQueryClient()
+
+const { mutateAsync: deleteOptionFn } = useMutation({
+    mutationFn: ({ option_id }: { option_id: string })=> deleteOption({option_id}),
+    onSuccess: (_data, variables) => { 
+      const {option_id} = variables 
+      const previousMenus = queryClient.getQueryData<Menu[] | []>(["get-menus"])
+      const updatedMenus = previousMenus?.map(menu => ({
+        ...menu,
+        options: (menu.options || []).filter(option => option.id !== option_id),
+      }));
+
+       queryClient.setQueryData(["get-menus"], updatedMenus);
+
+      toast.success("📩 A opção foi deletada com sucesso!");
+    },
+    
+    onError: (error: ErrorResponse) => {
+      error.map((err) => toast.error(err.message));
+    },
+  });
+
+  const onDeleteOption = async (option_id:string) => {
+   await deleteOptionFn({option_id});
+  };
+
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -80,6 +110,7 @@ export const CreateMenuSheet = ({ children, menu }: ICreateMenuSheet) => {
                         size="sm"
                         type="button"
                         className="hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={()=>onDeleteOption(option.id)}
                       >
                         <Trash2 />
                       </Button>
