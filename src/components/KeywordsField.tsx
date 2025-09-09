@@ -57,7 +57,7 @@ export const KeywordsField = () => {
             <FormLabel>Palavras-chave *</FormLabel>
 
             <FormControl>
-              <div className="flex gap-2 ">
+              <div className="flex gap-2">
                 <Input
                   disabled={isLoading}
                   value={keywordInput}

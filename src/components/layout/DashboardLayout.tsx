@@ -114,7 +114,7 @@ export const DashboardLayout = () => {
 
         <div className="mt-auto">UserLogged</div>
       </aside>
-      <main className="p-6 min-h-0 overflow-auto">
+      <main className="container mx-auto p-6 min-h-0 overflow-auto">
         <Outlet />
       </main>
     </div>

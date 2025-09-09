@@ -36,14 +36,16 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
   const [queue, setQueue] = useState<Lead[] | []>([]);
 
   useEffect(() => {
-    socket.on(`qr:${instance}`, async (qrCode: string) => {
-      const data = qrCode ? await generateQrCode.toDataURL(qrCode) : null;
+    socket.on(`connection.status`, async ({ status, qr }) => {
+      console.log(status, qr);
+      const data = qr ? await generateQrCode.toDataURL(qr) : null;
       setQr(data);
+      setStatus(status as Status);
     });
 
-    socket.on(`status:${instance}`, (newStatus: "pending" | "active") => {
+    socket.on(`status:${instance}`, (newStatus: Status) => {
       setStatus(newStatus);
-      if (newStatus === "active") setQr(null);
+      if (newStatus === "connected") setQr(null);
     });
 
     socket.on("newLead", (lead: Lead) => {
@@ -52,7 +54,7 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
     });
 
     socket.on("queue", (queue: Lead[]) => {
-      console.log('queue:',queue)
+      console.log("queue:", queue);
       setQueue(queue);
     });
 
@@ -61,6 +63,7 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
       socket.off(`status:${instance}`);
       socket.off(`newLead`);
       socket.off(`queue`);
+      socket.off(`connection.status`);
     };
   }, [instance]);
 

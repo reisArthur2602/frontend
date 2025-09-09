@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Input } from "./ui/input";
 import SelectOptionActionField from "./SelectOptionActionField";
 import { Button } from "./ui/button";
@@ -42,6 +42,8 @@ export const CreateOptionDialog = ({
   children,
   menu_id,
 }: ICreateOptionDialog) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const form = useForm<CreateOptionForm>({
     resolver: zodResolver(createOptionSchema),
   });
@@ -51,9 +53,10 @@ export const CreateOptionDialog = ({
   const { mutateAsync: createOptionFn } = useMutation({
     mutationFn: createOption,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get-menus"] });
+      queryClient.invalidateQueries({ queryKey: ["get-options"] });
       toast.success("🎯 A Opção foi adicionada com sucesso!");
       form.reset();
+      setOpen(false);
     },
     onError: (error: ErrorResponse) => {
       error.map((err) => toast.error(err.message));
@@ -66,7 +69,7 @@ export const CreateOptionDialog = ({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -98,7 +101,7 @@ export const CreateOptionDialog = ({
                   <FormItem>
                     <FormLabel>Rótulo *</FormLabel>
                     <FormControl>
-                      <Input placeholder="Falar com Suporte" {...field} />
+                      <Input placeholder="Rótulo" {...field} />
                     </FormControl>
 
                     <FormMessage />

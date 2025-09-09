@@ -11,8 +11,9 @@ import RegisterPage from "./pages/Register";
 import LoginPage from "./pages/Login";
 import DashboardPage from "./pages/Dashboard";
 import WhatsAppPage from "./pages/WhatsApp";
-import ChatPage from "./pages/Chat.tsx";
+
 import MenuPage from "./pages/Menu.tsx";
+import LeadsPage from "./pages/Leads.tsx";
 
 export const App = () => {
   return (
@@ -42,14 +43,14 @@ export const App = () => {
               <Route
                 path="leads"
                 caseSensitive={false}
-                element={<ChatPage />}
+                element={<LeadsPage />}
               />
 
               <Route path="*" element={<DashboardPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
-        <Toaster expand richColors position="top-center" theme="dark"/>
+        <Toaster expand richColors theme="dark" />
       </TanstackQueryProvider>
     </SocketProvider>
   );

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Sheet,
   SheetContent,
@@ -22,8 +22,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { CreateOptionDialog } from "./CreateOptionDialog";
 import { Badge } from "./ui/badge";
 import { deleteOption } from "@/http/option/delete-option";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getOptions } from "@/http/option/get-options";
 
 interface ICreateMenuSheet {
   children: ReactNode;
@@ -31,45 +32,69 @@ interface ICreateMenuSheet {
 }
 
 export const CreateMenuSheet = ({ children, menu }: ICreateMenuSheet) => {
-const queryClient = useQueryClient()
+  const [open, setOpen] = useState<boolean>(false);
 
-const { mutateAsync: deleteOptionFn } = useMutation({
-    mutationFn: ({ option_id }: { option_id: string })=> deleteOption({option_id}),
-    onSuccess: (_data, variables) => { 
-      const {option_id} = variables 
-      const previousMenus = queryClient.getQueryData<Menu[] | []>(["get-menus"])
-      const updatedMenus = previousMenus?.map(menu => ({
-        ...menu,
-        options: (menu.options || []).filter(option => option.id !== option_id),
-      }));
+  const handleClose = () => setOpen(false);
 
-       queryClient.setQueryData(["get-menus"], updatedMenus);
+  const isEditing = !!menu;
+
+  const queryClient = useQueryClient();
+
+  const { data: options } = useQuery({
+    queryKey: ["get-options", menu?.id],
+    enabled: !!menu?.id && open,
+    queryFn: () => getOptions({ menu_id: menu!.id }),
+    refetchInterval: 20000,
+  });
+
+  const { mutateAsync: deleteOptionFn } = useMutation({
+    mutationFn: ({ option_id }: { option_id: string }) =>
+      deleteOption({ option_id }),
+    onSuccess: (_data, variables) => {
+      const { option_id } = variables;
+      const previousMenus = queryClient.getQueryData<Menu[]>(["get-menus"]);
+
+      if (previousMenus) {
+        const updatedMenus = previousMenus.map((m) => ({
+          ...m,
+          options: (m.options || []).filter(
+            (option) => option.id !== option_id
+          ),
+        }));
+
+        queryClient.setQueryData(["get-menus"], updatedMenus);
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["get-options", menu?.id] });
 
       toast.success("📩 A opção foi deletada com sucesso!");
     },
-    
+
     onError: (error: ErrorResponse) => {
-      error.map((err) => toast.error(err.message));
+      if (Array.isArray(error)) {
+        error.forEach((err) => toast.error(err.message));
+      } else {
+        toast.error("Erro ao deletar a opção.");
+      }
     },
   });
 
-  const onDeleteOption = async (option_id:string) => {
-   await deleteOptionFn({option_id});
-  };
-
+  const onDeleteOption = async (option_id: string) =>
+    await deleteOptionFn({ option_id });
 
   return (
-    <Sheet>
+    <Sheet onOpenChange={setOpen} open={open}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent className="!max-w-2xl ">
-        <SheetHeader className="p-4">
-          <SheetTitle>Novo Menu</SheetTitle>
+      <SheetContent className="!max-w-4xl ">
+        <SheetHeader className="p-8 ">
+          <SheetTitle>{isEditing ? "Editar Menu" : "Novo Menu"}</SheetTitle>
           <SheetDescription>
             Configure as opções e comportamento do menu de atendimento
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className="min-h-0 p-6 pt-0 ">
-          <CreateMenuForm menu={menu} />
+        <ScrollArea className="min-h-0 px-8">
+          <CreateMenuForm menu={menu} handleClose={handleClose} />
+
           {menu && (
             <Card className="mt-6">
               <CardHeader>
@@ -88,36 +113,36 @@ const { mutateAsync: deleteOptionFn } = useMutation({
                   </CreateOptionDialog>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {menu.options.map((option) => (
-                    <div
-                      key={option.id}
-                      className="flex items-center  p-4 border rounded-lg"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{option.trigger}</Badge>
-                          <span className="font-medium">{option.label}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Ação: {option.action.replace("_", " ")}
-                        </p>
-                      </div>
 
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        type="button"
-                        className="hover:bg-destructive hover:text-destructive-foreground"
-                        onClick={()=>onDeleteOption(option.id)}
+              {options && options.length > 0 && (
+                <CardContent>
+                  <div className="space-y-3">
+                    {options.map((option) => (
+                      <div
+                        key={option.id}
+                        className="flex items-center p-4 border rounded-lg"
                       >
-                        <Trash2 />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary">{option.trigger}</Badge>
+                            <span className="font-medium">{option.label}</span>
+                          </div>
+                        </div>
+
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          type="button"
+                          className="hover:bg-destructive hover:text-destructive-foreground"
+                          onClick={() => onDeleteOption(option.id)}
+                        >
+                          <Trash2 />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              )}
             </Card>
           )}
         </ScrollArea>

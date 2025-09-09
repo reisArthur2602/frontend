@@ -57,7 +57,7 @@ const MenuPage = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Nome</TableHead>
+            <TableHead>Nome</TableHead>
             <TableHead>Gatilhos</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Ações</TableHead>
@@ -101,19 +101,12 @@ const MenuPage = () => {
                       </Button>
                     </CreateMenuSheet>
 
-                    <DropdownMenuItem>
-                      <Power />
-                      {menu.active ? "Desativar" : "Ativar"}
-                    </DropdownMenuItem>
-                  
-                      <DeleteMenuAlert menu_id={menu.id}>
+                    <DeleteMenuAlert menu_id={menu.id}>
                       <Button className="w-full justify-start" variant="ghost">
-                          <Trash2 />
-                      Excluir
+                        <Trash2 />
+                        Excluir
                       </Button>
                     </DeleteMenuAlert>
-                   
-                  
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

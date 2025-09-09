@@ -39,11 +39,10 @@ export type CreateMenuForm = z.infer<typeof createMenuSchema>;
 
 interface ICreateMenuForm {
   menu?: Menu;
+  handleClose: () => void;
 }
 
-export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
-  const isEditing = !!menu;
-
+export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
   const form = useForm<CreateMenuForm>({
     resolver: zodResolver(createMenuSchema),
     defaultValues: {
@@ -61,6 +60,7 @@ export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
       queryClient.invalidateQueries({ queryKey: ["get-menus"] });
       toast.success("📩 O Menu foi criado com sucesso!");
       form.reset();
+      handleClose();
     },
     onError: (error: ErrorResponse) => {
       error.map((err) => toast.error(err.message));
@@ -75,7 +75,7 @@ export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="name"
@@ -102,7 +102,7 @@ export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
               <FormLabel>Mensagem do Menu *</FormLabel>
               <FormControl>
                 <Textarea
-                className="whitespace-break-spaces"
+                  className="whitespace-break-spaces"
                   disabled={isLoading}
                   placeholder="Olá! Como posso ajudá-lo hoje? "
                   rows={3}
@@ -117,9 +117,9 @@ export const CreateMenuForm = ({ menu }: ICreateMenuForm) => {
 
         <KeywordsField />
 
-        <Button size="sm" disabled={isLoading || isEditing}>
-          Salvar Menu
-        </Button>
+        <div className="flex justify-end">
+          <Button disabled={isLoading}>Salvar Menu</Button>
+        </div>
       </form>
     </Form>
   );

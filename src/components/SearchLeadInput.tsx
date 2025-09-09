@@ -3,11 +3,12 @@ import { Input } from "./ui/input";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const SearchMenuInput = () => {
+export const SearchLeadInput = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParam = searchParams.get("q") || "";
 
   const [input, setInput] = useState(searchParam);
+
 
   useEffect(() => {
     setInput(searchParam);
@@ -18,9 +19,9 @@ export const SearchMenuInput = () => {
       const newParams = new URLSearchParams(searchParams);
 
       if (input.trim()) {
-        newParams.set("s", input);
+        newParams.set("q", input);
       } else {
-        newParams.delete("s");
+        newParams.delete("q");
       }
 
       setSearchParams(newParams);

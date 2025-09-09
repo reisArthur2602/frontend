@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const WhatsAppPage = () => {
   const { qr, status } = useSocket();
-  const isLoading = !status;
+  const isLoading = status === "connecting";
 
   return (
     <div>
@@ -23,37 +23,6 @@ const WhatsAppPage = () => {
         </section>
       ) : (
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                Status da Sessão
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent className="flex-1 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Estado:</span>
-                  <Badge
-                    variant={status === "active" ? "default" : "secondary"}
-                  >
-                    {status === "active" ? "Conectado" : "Aguardando conexão"}
-                  </Badge>
-                </div>
-
-                <p>
-                  {status === "active"
-                    ? "WhatsApp está conectado e funcionando"
-                    : "Escaneie o QR Code com seu WhatsApp"}
-                </p>
-              </div>
-
-              <Button size="lg" disabled>
-                <Smartphone className="h-4 w-4" />
-                Conectar WhatsApp
-              </Button>
-            </CardContent>
-          </Card>
           <Card>
             <CardHeader>
               <CardTitle>Conectar via QR Code</CardTitle>
@@ -103,7 +72,7 @@ const WhatsAppPage = () => {
                         QR Code não disponível
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        {status === "active"
+                        {status === "connected"
                           ? "WhatsApp já está conectado"
                           : 'Clique em "Conectar WhatsApp" para gerar o QR Code'}
                       </p>
@@ -111,6 +80,34 @@ const WhatsAppPage = () => {
                   </div>
                 </div>
               )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                Status da Sessão
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="flex-1 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Estado:</span>
+                  <Badge
+                    variant={status === "connected" ? "default" : "secondary"}
+                  >
+                    {status === "connected"
+                      ? "Conectado"
+                      : "Aguardando conexão"}
+                  </Badge>
+                </div>
+
+                <p>
+                  {status === "connected"
+                    ? "WhatsApp está conectado e funcionando"
+                    : "Escaneie o QR Code com seu WhatsApp"}
+                </p>
+              </div>
             </CardContent>
           </Card>
         </section>
