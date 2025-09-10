@@ -1,9 +1,7 @@
-import { SearchLeadInput } from "@/components/SearchLeadInput";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { getLeads } from "@/http/lead/get-leads";
-import { formatHours } from "@/utils/format-hours";
+
 import { formatPhone } from "@/utils/format-phone";
 
 import { useQuery } from "@tanstack/react-query";
@@ -55,8 +53,6 @@ const LeadsPage = () => {
         </Button>
       </header>
 
-      <SearchLeadInput />
-
       <section className="space-y-4">
         {leads?.map((leads) => (
           <div
@@ -72,12 +68,6 @@ const LeadsPage = () => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <PhoneCall className="size-3" /> {formatPhone(leads.phone)}
               </div>
-
-              <div className="text-xs text-muted-foreground">
-                <b>Última atividade:</b>{" "}
-                {formatHours(leads.matches[0].created_at)}
-              </div>
-              
             </div>
           </div>
         ))}

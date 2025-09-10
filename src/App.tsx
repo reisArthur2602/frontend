@@ -29,6 +29,7 @@ export const App = () => {
                 element={<RegisterPage />}
               />
             </Route>
+            <Route path="*" element={<LoginPage />} />
           </Routes>
 
           <Routes>
@@ -46,7 +47,7 @@ export const App = () => {
                 element={<LeadsPage />}
               />
 
-              <Route path="*" element={<DashboardPage />} />
+              <Route path="*" element={<MenuPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,13 +1,12 @@
 import { CreateMenuSheet } from "@/components/CreateMenuSheet";
 import { DeleteMenuAlert } from "@/components/DeleteMenuAlert";
-import { SearchMenuInput } from "@/components/SearchMenuInput";
+
 import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -23,7 +22,7 @@ import {
 import { getMenus } from "@/http/menu/get-menus";
 import { useQuery } from "@tanstack/react-query";
 
-import { Edit, MoreHorizontal, Plus, Power, Trash2 } from "lucide-react";
+import { Edit, MoreHorizontal, Plus, Trash2 } from "lucide-react";
 
 const MenuPage = () => {
   const { data: menus, isLoading } = useQuery({
@@ -51,8 +50,6 @@ const MenuPage = () => {
           ))}
         </div>
       )}
-
-      <SearchMenuInput />
 
       <Table>
         <TableHeader>

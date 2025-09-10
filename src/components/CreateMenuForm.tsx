@@ -15,7 +15,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createMenu } from "@/http/menu/create-menu";
+
 import { toast } from "sonner";
+import { updateMenu } from "@/http/menu/update-menu";
 
 const createMenuSchema = z.object({
   keywords: z.array(
@@ -28,7 +30,6 @@ const createMenuSchema = z.object({
     .string({ message: "O nome é obrigatório." })
     .trim()
     .min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
-
   message: z
     .string({ message: "A mensagem é obrigatória." })
     .trim()
@@ -52,13 +53,26 @@ export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
     },
   });
 
+  console.log(form.watch());
   const queryClient = useQueryClient();
 
-  const { mutateAsync: createMenuFn } = useMutation({
-    mutationFn: createMenu,
+  const { mutateAsync: upsertMenuFn } = useMutation({
+    mutationFn: async (data: CreateMenuForm) => {
+      if (menu) {
+        await updateMenu({ id: menu.id, ...data });
+      } else {
+        await createMenu(data);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["get-menus"] });
-      toast.success("📩 O Menu foi criado com sucesso!");
+
+      toast.success(
+        menu
+          ? "✏️ O menu foi atualizado com sucesso!"
+          : "📩 O menu foi criado com sucesso!"
+      );
+
       form.reset();
       handleClose();
     },
@@ -68,14 +82,17 @@ export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
   });
 
   const onSubmit = async (data: CreateMenuForm) => {
-    await createMenuFn(data);
+    await upsertMenuFn(data);
   };
 
   const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="name"
@@ -89,7 +106,6 @@ export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -104,21 +120,21 @@ export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
                 <Textarea
                   className="whitespace-break-spaces"
                   disabled={isLoading}
-                  placeholder="Olá! Como posso ajudá-lo hoje? "
+                  placeholder="Olá! Como posso ajudá-lo hoje?"
                   rows={3}
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
-
         <KeywordsField />
 
         <div className="flex justify-end">
-          <Button disabled={isLoading}>Salvar Menu</Button>
+          <Button disabled={isLoading}>
+            {menu ? "Atualizar Menu" : "Salvar Menu"}
+          </Button>
         </div>
       </form>
     </Form>

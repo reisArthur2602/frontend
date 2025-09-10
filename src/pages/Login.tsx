@@ -64,12 +64,14 @@ const LoginPage = () => {
     <>
       <Form {...form}>
         <form
-          className="max-w-sm w-full flex flex-col gap-6 "
+          className="max-w-sm w-full flex flex-col gap-6 itemc"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <Logo />
+          <div className="w-fit mx-auto">
+            <Logo />
+          </div>
 
-          <h1>Bem-vindo de volta</h1>
+          <h1 className="text-center">Bem-vindo de volta</h1>
 
           <FormField
             control={form.control}

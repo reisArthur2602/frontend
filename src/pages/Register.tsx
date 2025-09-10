@@ -50,6 +50,7 @@ const RegisterPage = () => {
     },
   });
 
+  const isLoading = form.formState.isSubmitting;
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     await createAccountFn(data);
   };
@@ -61,9 +62,11 @@ const RegisterPage = () => {
           className="max-w-sm w-full flex flex-col gap-6 "
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <Logo />
+          <div className="w-fit mx-auto">
+            <Logo />
+          </div>
 
-          <h1>Crie sua conta</h1>
+          <h1 className="text-center">Crie sua conta</h1>
 
           <FormField
             control={form.control}
@@ -72,7 +75,11 @@ const RegisterPage = () => {
               <FormItem>
                 <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu nome completo" {...field} />
+                  <Input
+                    placeholder="Seu nome completo"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,6 +97,7 @@ const RegisterPage = () => {
                     placeholder="seuemail@email.com"
                     type="email"
                     {...field}
+                    disabled={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,7 +112,12 @@ const RegisterPage = () => {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" type="password" {...field} />
+                  <Input
+                    placeholder="******"
+                    type="password"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,6 +133,7 @@ const RegisterPage = () => {
               type="button"
               onClick={() => navigate("/")}
               className="p-0 text-sm"
+              disabled={isLoading}
             >
               Acesse sua conta
             </Button>

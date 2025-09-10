@@ -24,15 +24,6 @@ const actionTypes = [
     value: "auto_reply",
     label: "Resposta Automática",
   },
-
-  {
-    value: "forward_to_number",
-    label: "Encaminhar",
-  },
-  {
-    value: "redirect_queue",
-    label: "Adicionar para fila",
-  },
 ];
 
 export const SelectOptionActionField = () => {
@@ -69,69 +60,6 @@ export const SelectOptionActionField = () => {
             </FormControl>
             <FormMessage />
           </FormItem>
-        );
-      case "redirect_queue":
-        return (
-          <FormItem>
-            <FormLabel htmlFor="wait_message">Mensagem de Espera*</FormLabel>
-            <FormControl>
-              <Textarea
-                id="wait_message"
-                value={payload.reply_text || ""}
-                onChange={(e) => updatePayload("reply_text", e.target.value)}
-                placeholder="🙋 Você foi adicionado à fila de atendimento. Aguarde um atendente."
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        );
-
-      case "forward_to_number":
-        return (
-          <div className="space-y-4">
-            <FormItem>
-              <FormLabel htmlFor="forward_to_number">
-                Encaminhar para *
-              </FormLabel>
-              <FormControl>
-                <Input
-                  id="forward_to_number"
-                  value={payload.forward_to_number || ""}
-                  onChange={(e) =>
-                    updatePayload("forward_to_number", e.target.value)
-                  }
-                  placeholder="5511999999999"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem>
-              <FormLabel htmlFor="forward_text">Texto Encaminhado</FormLabel>
-              <FormControl>
-                <Textarea
-                  id="forward_text"
-                  value={payload.forward_text || ""}
-                  onChange={(e) =>
-                    updatePayload("forward_text", e.target.value)
-                  }
-                  placeholder="Mensagem encaminhada:"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem>
-              <FormLabel htmlFor="finish_text">Texto de Finalização</FormLabel>
-              <FormControl>
-                <Textarea
-                  id="finish_text"
-                  value={payload.finish_text || ""}
-                  onChange={(e) => updatePayload("finish_text", e.target.value)}
-                  placeholder="Sua mensagem foi encaminhada!"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </div>
         );
 
       default:

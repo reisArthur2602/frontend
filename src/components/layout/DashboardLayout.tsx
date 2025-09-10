@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../shared/Logo";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const NAV_LINKS = [
   {
@@ -21,6 +22,7 @@ const NAV_LINKS = [
         href: "/dashboard",
         icon: LayoutGridIcon,
         tooltip: "Acesse a visão geral do seu painel de automações",
+        disabled: true,
       },
     ],
   },
@@ -32,6 +34,7 @@ const NAV_LINKS = [
         href: "/dashboard/menu",
         icon: MessageSquare,
         tooltip: "Configure mensagens automáticas para agilizar o atendimento",
+        disabled: false,
       },
     ],
   },
@@ -43,6 +46,7 @@ const NAV_LINKS = [
         href: "/dashboard/leads",
         icon: ContactRoundIcon,
         tooltip: "Gerencie e visualize todos os contatos do seu WhatsApp",
+        disabled: false,
       },
     ],
   },
@@ -54,6 +58,7 @@ const NAV_LINKS = [
         href: "/dashboard/whatsapp",
         icon: QrCode,
         tooltip: "Configure e monitore a conexão da sua instância WhatsApp",
+        disabled: false,
       },
     ],
   },
@@ -77,11 +82,16 @@ export const DashboardLayout = () => {
     handleLoadSessionUser();
   }, []);
 
+  const handleLogout = () => {
+    tokenUtils.destroy();
+    navigate("/");
+  };
+
   const { pathname } = useLocation();
 
   const isCurrentPathName = (currentPathname: string) =>
     pathname === currentPathname;
-
+  console.log(pathname);
   return (
     <div className="h-screen grid grid-cols-1 md:[grid-template-columns:280px_1fr]">
       <aside className="flex flex-col gap-4 p-4 h-full overflow-auto border-r border-muted/40 bg-muted/5">
@@ -98,10 +108,12 @@ export const DashboardLayout = () => {
                   key={item.href}
                   onClick={() => navigate(item.href, { replace: false })}
                   title={item.tooltip}
+                  disabled={item.disabled}
                   className={cn(
                     "flex no-underline text-muted-foreground/60 text-xs p-2 rounded-md items-center gap-2 hover:bg-muted hover:text-prima transition-all font-medium duration-100",
                     isCurrentPathName(item.href) &&
-                      "bg-primary text-white hover:bg-primary/70"
+                      "bg-primary text-white hover:bg-primary/70",
+                    item.disabled && "opacity-20"
                   )}
                 >
                   <item.icon size={16} strokeWidth={2} />
@@ -112,7 +124,9 @@ export const DashboardLayout = () => {
           ))}
         </nav>
 
-        <div className="mt-auto">UserLogged</div>
+        <Button className="mt-auto" variant="outline" onClick={handleLogout}>
+          Sair da conta
+        </Button>
       </aside>
       <main className="container mx-auto p-6 min-h-0 overflow-auto">
         <Outlet />
