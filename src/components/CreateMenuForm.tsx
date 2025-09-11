@@ -53,7 +53,7 @@ export const CreateMenuForm = ({ menu, handleClose }: ICreateMenuForm) => {
     },
   });
 
-  console.log(form.watch());
+
   const queryClient = useQueryClient();
 
   const { mutateAsync: upsertMenuFn } = useMutation({

@@ -1,6 +1,7 @@
 import { CreateMenuSheet } from "@/components/CreateMenuSheet";
 import { DeleteMenuAlert } from "@/components/DeleteMenuAlert";
 
+
 import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ const MenuPage = () => {
 
   return (
     <div className="space-y-8">
+     
       <header className="flex items-center justify-between">
         <h1 className="text-base font-bold tracking-tight">Menu</h1>
         <CreateMenuSheet>

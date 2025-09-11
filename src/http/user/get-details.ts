@@ -16,15 +16,13 @@ export const getDetails = async ({
 }) => {
   try {
     if (!access_token) return null;
-    
+
     axiosConfig.defaults.headers["Authorization"] = `Bearer ${access_token}`;
 
     const { data } = await axiosConfig.get<IGetDetailsResponse>("/user/me");
 
     return data;
-
   } catch (error) {
-    console.log(error);
     tokenUtils.destroy();
     return null;
   }

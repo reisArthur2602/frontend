@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Smartphone } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useSocket } from "@/providers/Socket";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -12,8 +11,8 @@ const WhatsAppPage = () => {
   const isLoading = status === "connecting";
 
   return (
-    <div>
-      <header className="mb-12">
+    <div className="space-y-8">
+      <header>
         <h1 className="text-base font-bold tracking-tight">Gerenciar Sessão</h1>
       </header>
       {isLoading ? (

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 
 import { getLeads } from "@/http/lead/get-leads";
@@ -9,7 +10,7 @@ import { Download, PhoneCall, Users2 } from "lucide-react";
 import { toast } from "sonner";
 
 const LeadsPage = () => {
-  const { data: leads, isLoading } = useQuery({
+  const { data: leads } = useQuery({
     queryKey: ["get-leads"],
     queryFn: getLeads,
     refetchInterval: 20000,

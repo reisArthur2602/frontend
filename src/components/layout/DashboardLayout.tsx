@@ -12,6 +12,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../shared/Logo";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 const NAV_LINKS = [
   {
@@ -22,7 +23,7 @@ const NAV_LINKS = [
         href: "/dashboard",
         icon: LayoutGridIcon,
         tooltip: "Acesse a visão geral do seu painel de automações",
-        disabled: true,
+        disabled: false,
       },
     ],
   },
@@ -91,7 +92,7 @@ export const DashboardLayout = () => {
 
   const isCurrentPathName = (currentPathname: string) =>
     pathname === currentPathname;
-  console.log(pathname);
+
   return (
     <div className="h-screen grid grid-cols-1 md:[grid-template-columns:280px_1fr]">
       <aside className="flex flex-col gap-4 p-4 h-full overflow-auto border-r border-muted/40 bg-muted/5">
@@ -129,6 +130,15 @@ export const DashboardLayout = () => {
         </Button>
       </aside>
       <main className="container mx-auto p-6 min-h-0 overflow-auto">
+        <Alert className="!text-red-700 mb-4">
+          <AlertTitle>⚠️Aviso importante</AlertTitle>
+          <AlertDescription className="leading-relaxed">
+            Você está utilizando a versão inicial do sistema (MVP). Alguns
+            recursos ainda estão em desenvolvimento e podem sofrer ajustes.
+            Estamos evoluindo constantemente para entregar a melhor experiência
+            🚀.
+          </AlertDescription>
+        </Alert>
         <Outlet />
       </main>
     </div>

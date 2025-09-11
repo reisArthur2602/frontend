@@ -30,7 +30,6 @@ export const SocketProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     socket.on(`connection.status`, async ({ status, qr }) => {
-      console.log(status, qr);
       const data = qr ? await generateQrCode.toDataURL(qr) : null;
       setQr(data);
       setStatus(status as Status);

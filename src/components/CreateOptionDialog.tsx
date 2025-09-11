@@ -64,7 +64,7 @@ export const CreateOptionDialog = ({
   });
 
   const onSubmit = async (data: CreateOptionForm) => {
-    console.log(data);
+  
     await createOptionFn({ ...data, menu_id });
   };
 
