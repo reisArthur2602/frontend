@@ -29,7 +29,6 @@ export const App = () => {
                 element={<RegisterPage />}
               />
             </Route>
-            <Route path="*" element={<LoginPage />} />
           </Routes>
 
           <Routes>
